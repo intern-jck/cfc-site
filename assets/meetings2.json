@@ -6,7 +6,7 @@
             "coordinates": [-82.547049, 35.595747]
         },
         "properties": {
-            "government": "Buncombe County",
+            "county": "Buncombe County",
             "publicbody": "Affordable Housing Committee",
             "location": "Buncombe County Permits & Inspections",
             "address": "30 Valley Street, Meeting Room, Asheville, NC 28801",
@@ -24,7 +24,7 @@
             "coordinates": [-82.55529, 35.59748]
         },
         "properties": {
-            "government": "City of Asheville",
+            "county": "City of Asheville",
             "publicbody": "Asheville City Council",
             "location": "Harrah’s Cherokee Center",
             "address": "87 Haywood St, Asheville, NC 28801",
@@ -42,7 +42,7 @@
             "coordinates": [-82.54826026293046, 35.598922154690385]
         },
         "properties": {
-            "government": "Asheville-Buncombe County",
+            "county": "Asheville-Buncombe County",
             "publicbody": "AB Tech/Buncombe County Joint Capital Advisory Committee",
             "location": "County Administration Building",
             "address": "200 College Street, Asheville, NC 28801",
@@ -60,7 +60,7 @@
             "coordinates": [-82.548260262931, 35.59892215469039]
         },
         "properties": {
-            "government": "Buncombe County",
+            "county": "Buncombe County",
             "publicbody": "Ad Hoc Reappraisal Committee",
             "location": "County Administration Building",
             "address": "200 College Street, Asheville, NC 28801",
@@ -78,7 +78,7 @@
             "coordinates": [-82.6231, 35.601185]
         },
         "properties": {
-            "government": "Buncombe County",
+            "county": "Buncombe County",
             "publicbody": "Adult Care Home Community Advisory Committee",
             "location": "Land of Sky Regional Council Offices",
             "address": "339 New Leicester Highway, Asheville, NC 28806",
@@ -96,7 +96,7 @@
             "coordinates": [-82.54873467670735, 35.596417199178475]
         },
         "properties": {
-            "government": "Asheville-Buncombe County",
+            "county": "Asheville-Buncombe County",
             "publicbody": "African American Heritage Commission",
             "location": "City Hall",
             "address": "70 Court Plaza, 1st Floor North Conference Room Asheville, NC 28801 ",
@@ -114,7 +114,7 @@
             "coordinates": [-82.6328, 35.61869]
         },
         "properties": {
-            "government": "Buncombe County",
+            "county": "Buncombe County",
             "publicbody": "Agricultural Advisory Board for Farmland Preservation",
             "location": "Soil & Water Conference",
             "address": "49 Mt. Carmel Road, Asheville, NC 28806",
@@ -132,7 +132,7 @@
             "coordinates":[-82.54873467670735, 35.596417199178475]
         },
         "properties": {
-            "government": "City of Ashevile",
+            "county": "City of Ashevile",
             "publicbody": "Asheville Board of Adjustment",
             "location": "City Hall",
             "address": "70 Court Plaza, 1st Floor North Conference Room Asheville, NC 28801",
@@ -150,7 +150,7 @@
             "coordinates":[-82.56039420232847, 35.597385858594926]
         },
         "properties": {
-            "government": "Asheville-Buncombe County",
+            "county": "Asheville-Buncombe County",
             "publicbody": "Asheville-Buncombe Regional Sports Commission",
             "location": "Chamber of Commerce",
             "address": "36 Montford Ave, Asheville, NC 28801",
@@ -168,7 +168,7 @@
             "coordinates":[-79.4014219293032, 36.06924312939426]
         },
         "properties": {
-            "government": "Alamance County",
+            "county": "Alamance County",
             "publicbody": "County Commissioners",
             "location": "County Office Building",
             "address": "124 W. Elm St., Commissioners Meeting Room located on the 2nd Floor, Graham, NC  27253",
@@ -186,7 +186,7 @@
             "coordinates":[-79.451182400000019,36.08054825636156]
         },
         "properties": {
-            "government": "Alamance County",
+            "county": "Alamance County",
             "publicbody": "Adult Care Home Community Advisory Committee",
             "location": "J. R. Kernodle Senior Center",
             "address": "1535 S Mebane St, Burlington NC 27215",
@@ -204,7 +204,7 @@
             "coordinates":[-79.4014219293032, 36.06924312939426]
         },
         "properties": {
-            "government": "My New Meeting County",
+            "county": "My New Meeting County",
             "publicbody": "My New Meeting",
             "location": "Place",
             "address": "124 W. Elm St., Commissioners Meeting Room located on the 2nd Floor, Graham, NC  27253",

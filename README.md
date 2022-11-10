@@ -1,10 +1,13 @@
 # JCK DRAFT
 
+# Open Meeting Toolkit Site
 
-# Open Meeting Toolkit
 Educational materials to replicate [open meetings policy](openmeetingspolicy.com) in any North Carolina community.
 
-Our work in progress creating a website to host the toolkit can be found [here](https://code-for-the-carolinas.github.io/openmeetingtoolkit).
+Site URL:
+
+(https://code-for-the-carolinas.github.io/openmeetingtoolkit)
+
 # Table of contents
 
 1. [Problem](#problem)
@@ -59,7 +62,12 @@ Educational materials to replicate openmeetingspolicy.com in any North Carolina 
 
 The toolkit site can be found here: https://code-for-the-carolinas.github.io/openmeetingtoolkit
 
+
 # Forking the Repo and Making Changes
+
+// Change gh-pages to main
+
+
 Updating the gh-pages branch is what actually shows up on the website. You will need to have a [SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) on github and a code editor (example: [VS Studio](https://visualstudio.microsoft.com/)) to get started.
 
 
