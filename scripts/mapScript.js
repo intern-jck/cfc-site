@@ -17,22 +17,26 @@ const getMeetings = () => {
 
 // Sort meeting list to organize meetings by county
 function getMeetingsByCounty(meetings) {
+
     // For each meeting in the meeting list,
     return meetings.reduce((meetingsByCounty, item) => {
 
         // get the county the meeting is in,
-        // TODO:  change goverment to county in meetings.json
         const county = item.properties.county;
 
-        // if (county !== "") {
+        // if county is not blank,
         if (county) {
-            // Adds the meeting to the
-            if (!meetingsByCounty[county]) {
-                meetingsByCounty[county] = [{properties: {...item.properties}, geometry: {...item.geometry}}];
-            } else {
+            // check if it's in our new list,
+            if (meetingsByCounty[county]) {
+                // add the meeting to the county,
                 meetingsByCounty[county].push({properties: {...item.properties}, geometry: {...item.geometry}});
+            } else {
+                // otherwise add a new entry for the county.
+                meetingsByCounty[county] = [{properties: {...item.properties}, geometry: {...item.geometry}}];
             }
         }
+
+        // Return a nice sorted object!
         return meetingsByCounty;
     }, []);
 }
