@@ -1,324 +1,323 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2N0aGVncmVhdCIsImEiOiJjbDI2a2lodnYwMnRnM2ZvdXVhZXNjbHd0In0.4CfhKr_VP1IDEM08Nk7PXg';
+
 const stateCoords = [-79.8, 35.3];
 const defaultZoom = 6;
 
-const get
-/**
- * Add the map to the page
- */
 const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/light-v10',
+    container: 'map', // container ID
+    style: 'mapbox://styles/mapbox/streets-v11', // style URL
     center: stateCoords,
-    zoom: defaultZoom,
-    scrollZoom: false
+    zoom:defaultZoom
+    // projection: 'globe' // display the map as a 3D globe
+});
+
+map.on('style.load', () => {
+    // map.setFog({}); // Set the default atmosphere style
 });
 
 
-/**
- * Wait until the map loads to make changes to the map.
- */
-map.on('load', () => {
-    /**
-     * This is where your '.addLayer()' used to be, instead
-     * add only the source without styling a layer
-     */
-    // map.addSource('places', {
-    //     'type': 'geojson',
-    //     'data': meetings
-    // });
-
-    /**
-     * Add all the things to the page:
-     * - The location listings on the side of the page
-     * - The markers onto the map
-     */
-    // buildLocationList(meetings);
-    // addMarkers(meetings);
-    console.log('map loaded')
-    fetch("meetings.json")
-      .then((response) => {
-        console.log('got', response.json())
-        return response.json;
-      })
-      .then(data => console.log(data))
-    // .then(moreMeetings => {
-    //     map.addSource('morePlaces', {
-    //         'type': 'geojson',
-    //         'data': moreMeetings
-    //     });
-    //     buildCountyList(moreMeetings)
-    // })
-    .catch((error) => {
-      console.log('failed to get meetings', error)
-    });
-});
-
-/**
- * Add a marker to the map for every meeting listing.
- **/
-function addMarkers(meetings) {
-    /* For each feature in the GeoJSON object above: */
-    for (const marker of meetings) {
-        /* Create a div element for the marker. */
-        const el = document.createElement('div');
-        /* Assign a unique `id` to the marker. */
-        el.id = `marker-${marker.properties.id}`;
-        /* Assign the `marker` class to each marker for styling. */
-        el.className = 'marker';
-
-        /**
-          * Create a marker using the div element
-          * defined above and add it to the map.
-          **/
-        new mapboxgl.Marker(el, { offset: [0, -23] })
-            .setLngLat(marker.geometry.coordinates)
-            .addTo(map);
-
-        /**
-          * Listen to the element and when it is clicked, do three things:
-          * 1. Fly to the point
-          * 2. Close all other popups and display popup for clicked meeting
-          * 3. Highlight listing in sidebar (and remove highlight for all other listings)
-          **/
-        el.addEventListener('click', (e) => {
-            /* Fly to the point */
-            flytoMeeting(marker.geometry.coordinates, 15);
-            /* Close all other popups and display popup for clicked meeting */
-            createPopUp(marker);
-            /* Highlight listing in sidebar */
-            const activeItem = document.getElementsByClassName('active');
-            e.stopPropagation();
-            if (activeItem[0]) {
-                activeItem[0].classList.remove('active');
-            }
-            const listing = document.getElementById(
-                `listing-${marker.properties.id}`
-            );
-            listing.classList.add('active');
-        });
-    }
-}
-
-/**
-  * Clear the map of markers and zoom back out
-  * Remove popup
-  */
-  function removeAllMarkers() {
-    const markers = document.querySelectorAll('.marker')
-    const popup = document.querySelector('.mapboxgl-popup')
-    if(popup) popup.remove()
-    for(const marker of markers) {
-        marker.remove()
-    }
-    flytoMeeting();
-  }
-
-/**
-  * Builds and returns a full meeting list separated by county
-**/
-function buildMeetingListByCounty(meetingList) {
-    return meetingList.features.reduce((obj, item) => {
-        const county = item.properties.government;
-
-        if (county !== "") {
-            if (!obj[county]) {
-                obj[county] = [{properties: {...item.properties}, geometry: {...item.geometry}}];
-            } else {
-                obj[county].push({properties: {...item.properties}, geometry: {...item.geometry}});
-            }
-        }
-        return obj;
-    }, []);
-}
-
-/**
-  * Adds the County list to sidebar
-**/
-function buildCountyList(meetingList) {
-    const countyList = buildMeetingListByCounty(meetingList)
-    const counties = document.querySelector('#counties');
-    /* Sort list of counties */
-    const sortedCounties = Object.keys(countyList).sort((c1, c2) => c1.localeCompare(c2))
-
-    for (const countyName of sortedCounties) {
-
-        /* Add a new county listing section to the sidebar. */
-        const county = counties.appendChild(document.createElement('div'));
-        /* Assign the `item` class to each listing for styling. */
-        county.className = 'item';
-
-        /* Add the link to the individual listing created above. */
-        const link = county.appendChild(document.createElement('a'));
-        link.href = '#';
-        link.className = 'title';
-        link.id = `${countyName}`;
-        link.innerHTML = `${countyName}`
-
-    }
-    /**
-      * Uses event delegation to listen for clicks on list items
-      * Build meeting list for the county and add markers to map
-      **/
-
-    counties.addEventListener('click', function(event) {
-        // ignore if not clicking on link
-        if(!event.target.matches('.title')) return
-        event.preventDefault();
-
-        // hide counties list when a county is clicked
-        counties.style.display = 'none'
-
-        const meetingList = countyList[event.target.id]
-
-        /* Fly to general are of listings*/
-        flytoMeeting(meetingList[0].geometry.coordinates, 8)
-        buildLocationList(meetingList)
-        addMarkers(meetingList)
-    }, false)
-    return countyList
-}
-
-/**
-  *  Back button handles re-showing the county list
-  *  Removes previous meeting listings and each event handler
-  *  Removes markers from maps
-  *  String with selector type is required for now
-  *  Future: pass the elements as arguments
-  **/
-function backButton(showElem, parentElem, removeEle) {
-    const listings = document.querySelector(parentElem)
-    const backButton = listings.appendChild(document.createElement('div'))
-    backButton.className = 'item'
-
-    /* Make the back button a link for accessibility */
-    const link = backButton.appendChild(document.createElement('a'))
-    link.href = '#'
-    link.className = 'title'
-    link.id = 'Back'
-    link.innerText = '< Back to Counties'
+const getMeetings = () => {
+    fetch('assets/meetings.json')
+        .then((response) => (response.json()))
+        .then((data) => (data))
+        .catch((error) => (console.log('error getting mettings', error)));
+};
 
 
-    backButton.addEventListener('click', () => {
-        document.querySelector(showElem).style.display = 'block'
-        removeAllMarkers();
-        const collection = listings.querySelectorAll(removeEle)
-        for (const elem of collection) {
-            elem.parentNode.removeChild(elem)
-        }
-    })
-}
 
-/**
-  * Add a listing for each meeting to the sidebar.
-  **/
-function buildLocationList(meetings) {
-    /* Add back button to top of list to nav back to counties */
-    backButton('#counties', '#listings', '.item')
+// /**
+//  * Wait until the map loads to make changes to the map.
+//  */
+// map.on('load', () => {
 
-    /* Continue to add meeting listings */
-    for (const meeting of (meetings)) {
-        /* Add a new listing section to the sidebar. */
-        const listings = document.getElementById('listings');
-        const listing = listings.appendChild(document.createElement('div'));
-        /* Assign a unique `id` to the listing. */
-        listing.id = `listing-${meeting.properties.id}`;
-        /* Assign the `item` class to each listing for styling. */
-        listing.className = 'item';
+//     // buildLocationList(meetings);
+//     // addMarkers(meetings);
+//     console.log('map loaded');
 
-        /* Add the link to the individual listing created above. */
-        const link = listing.appendChild(document.createElement('a'));
-        link.href = '#';
-        link.className = 'title';
-        link.id = `link-${meeting.properties.id}`;
-        link.innerHTML = `${meeting.properties.publicbody}`;
+//     // .then(moreMeetings => {
+//     //     map.addSource('morePlaces', {
+//     //         'type': 'geojson',
+//     //         'data': moreMeetings
+//     //     });
+//     //     buildCountyList(moreMeetings)
+//     // })
+//     // .catch((error) => {
+//     //   console.log('failed to get meetings', error)
+//     // });
+// });
 
-        /* Add details to the individual listing. */
-        const details = listing.appendChild(document.createElement('div'));
-        details.innerHTML = `${meeting.properties.location}`;
-        if (meeting.properties.phone) {
-            details.innerHTML += ` &middot; ${meeting.properties.phoneFormatted}`;
-        }
 
-        /**
-          * Listen to the element and when it is clicked, do four things:
-          * 1. Update the `currentFeature` to the meeting associated with the clicked link
-          * 2. Fly to the point
-          * 3. Close all other popups and display popup for clicked meeting
-          * 4. Highlight listing in sidebar (and remove highlight for all other listings)
-          **/
-        link.addEventListener('click', function () {
-            for (const feature of meetings) {
-                if (this.id === `link-${feature.properties.id}`) {
-                    flytoMeeting(feature.geometry.coordinates, 15);
-                    createPopUp(feature);
-                }
-            }
-            const activeItem = document.getElementsByClassName('active');
-            if (activeItem[0]) {
-                activeItem[0].classList.remove('active');
-            }
-            this.parentNode.classList.add('active');
-        });
-    }
 
-}
 
-/**
-  * Use Mapbox GL JS's `flyTo` to move the camera smoothly
-  * a given center point.
-  * Defaults: coords = center of State, zoomLevel = state in focus
-  **/
-function flytoMeeting(coords = stateCoords, zoomLevel = defaultZoom) {
-    map.flyTo({
-        center: coords,
-        zoom: zoomLevel
-    });
-}
 
-/**
-  * Create a Mapbox GL JS `Popup`.
-  **/
-function createPopUp(currentFeature) {
-    const popUps = document.getElementsByClassName('mapboxgl-popup');
-    if (popUps[0]) popUps[0].remove();
-    const popup = new mapboxgl.Popup({ closeOnClick: false })
-        .setLngLat(currentFeature.geometry.coordinates)
-        .setHTML(
-            `<h3><center>${currentFeature.properties.publicbody}</center></h3>
-                        <h4>
-                        <table>
-                        <tr>
-                        <th><center>Government</center></th>
-                        <th><center>Public Body</center></th>
-                        <th><center>Location</center></th>
-                        </tr>
-                        <tr>
-                        <td><center>${currentFeature.properties.government}</center></td>
-                        <td><center>${currentFeature.properties.publicbody}</center></td>
-                        <td><center>${currentFeature.properties.location}</center></td>
-                        </tr>
-                        <tr>
-                        <th><center>Address</center></th>
-                        <th><center>Schedule</center></th>
-                        <th><center>Start Time</center></th>
-                        </tr>
-                        <tr>
-                        <td><center>${currentFeature.properties.address}</center></td>
-                        <td><center>${currentFeature.properties.schedule}</center></td>
-                        <td><center>${currentFeature.properties.start}</center></td>
-                        </tr>
-                        <tr>
-                        <th><center>End Time</center></th>
-                        <th><center>Remote Options</center></th>
-                        </tr>
-                        <tr>
-                        <td><center>${currentFeature.properties.end}</center></td>
-                        <td><center>${currentFeature.properties.remote}</center></td>
-                        </h4>`
-        )
-        .addTo(map);
-}
 
-//adding zoom and rotation controls to map
-map.addControl(new mapboxgl.NavigationControl());
+
+
+// /**
+//  * Add a marker to the map for every meeting listing.
+//  **/
+// function addMarkers(meetings) {
+//     /* For each feature in the GeoJSON object above: */
+//     for (const marker of meetings) {
+//         /* Create a div element for the marker. */
+//         const el = document.createElement('div');
+//         /* Assign a unique `id` to the marker. */
+//         el.id = `marker-${marker.properties.id}`;
+//         /* Assign the `marker` class to each marker for styling. */
+//         el.className = 'marker';
+
+//         /**
+//           * Create a marker using the div element
+//           * defined above and add it to the map.
+//           **/
+//         new mapboxgl.Marker(el, { offset: [0, -23] })
+//             .setLngLat(marker.geometry.coordinates)
+//             .addTo(map);
+
+//         /**
+//           * Listen to the element and when it is clicked, do three things:
+//           * 1. Fly to the point
+//           * 2. Close all other popups and display popup for clicked meeting
+//           * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+//           **/
+//         el.addEventListener('click', (e) => {
+//             /* Fly to the point */
+//             flytoMeeting(marker.geometry.coordinates, 15);
+//             /* Close all other popups and display popup for clicked meeting */
+//             createPopUp(marker);
+//             /* Highlight listing in sidebar */
+//             const activeItem = document.getElementsByClassName('active');
+//             e.stopPropagation();
+//             if (activeItem[0]) {
+//                 activeItem[0].classList.remove('active');
+//             }
+//             const listing = document.getElementById(
+//                 `listing-${marker.properties.id}`
+//             );
+//             listing.classList.add('active');
+//         });
+//     }
+// }
+
+// /**
+//   * Clear the map of markers and zoom back out
+//   * Remove popup
+//   */
+//   function removeAllMarkers() {
+//     const markers = document.querySelectorAll('.marker')
+//     const popup = document.querySelector('.mapboxgl-popup')
+//     if(popup) popup.remove()
+//     for(const marker of markers) {
+//         marker.remove()
+//     }
+//     flytoMeeting();
+//   }
+
+// /**
+//   * Builds and returns a full meeting list separated by county
+// **/
+// function buildMeetingListByCounty(meetingList) {
+//     return meetingList.features.reduce((obj, item) => {
+//         const county = item.properties.government;
+
+//         if (county !== "") {
+//             if (!obj[county]) {
+//                 obj[county] = [{properties: {...item.properties}, geometry: {...item.geometry}}];
+//             } else {
+//                 obj[county].push({properties: {...item.properties}, geometry: {...item.geometry}});
+//             }
+//         }
+//         return obj;
+//     }, []);
+// }
+
+// /**
+//   * Adds the County list to sidebar
+// **/
+// function buildCountyList(meetingList) {
+//     const countyList = buildMeetingListByCounty(meetingList)
+//     const counties = document.querySelector('#counties');
+//     /* Sort list of counties */
+//     const sortedCounties = Object.keys(countyList).sort((c1, c2) => c1.localeCompare(c2))
+
+//     for (const countyName of sortedCounties) {
+
+//         /* Add a new county listing section to the sidebar. */
+//         const county = counties.appendChild(document.createElement('div'));
+//         /* Assign the `item` class to each listing for styling. */
+//         county.className = 'item';
+
+//         /* Add the link to the individual listing created above. */
+//         const link = county.appendChild(document.createElement('a'));
+//         link.href = '#';
+//         link.className = 'title';
+//         link.id = `${countyName}`;
+//         link.innerHTML = `${countyName}`
+
+//     }
+//     /**
+//       * Uses event delegation to listen for clicks on list items
+//       * Build meeting list for the county and add markers to map
+//       **/
+
+//     counties.addEventListener('click', function(event) {
+//         // ignore if not clicking on link
+//         if(!event.target.matches('.title')) return
+//         event.preventDefault();
+
+//         // hide counties list when a county is clicked
+//         counties.style.display = 'none'
+
+//         const meetingList = countyList[event.target.id]
+
+//         /* Fly to general are of listings*/
+//         flytoMeeting(meetingList[0].geometry.coordinates, 8)
+//         buildLocationList(meetingList)
+//         addMarkers(meetingList)
+//     }, false)
+//     return countyList
+// }
+
+// /**
+//   *  Back button handles re-showing the county list
+//   *  Removes previous meeting listings and each event handler
+//   *  Removes markers from maps
+//   *  String with selector type is required for now
+//   *  Future: pass the elements as arguments
+//   **/
+// function backButton(showElem, parentElem, removeEle) {
+//     const listings = document.querySelector(parentElem)
+//     const backButton = listings.appendChild(document.createElement('div'))
+//     backButton.className = 'item'
+
+//     /* Make the back button a link for accessibility */
+//     const link = backButton.appendChild(document.createElement('a'))
+//     link.href = '#'
+//     link.className = 'title'
+//     link.id = 'Back'
+//     link.innerText = '< Back to Counties'
+
+
+//     backButton.addEventListener('click', () => {
+//         document.querySelector(showElem).style.display = 'block'
+//         removeAllMarkers();
+//         const collection = listings.querySelectorAll(removeEle)
+//         for (const elem of collection) {
+//             elem.parentNode.removeChild(elem)
+//         }
+//     })
+// }
+
+// /**
+//   * Add a listing for each meeting to the sidebar.
+//   **/
+// function buildLocationList(meetings) {
+//     /* Add back button to top of list to nav back to counties */
+//     backButton('#counties', '#listings', '.item')
+
+//     /* Continue to add meeting listings */
+//     for (const meeting of (meetings)) {
+//         /* Add a new listing section to the sidebar. */
+//         const listings = document.getElementById('listings');
+//         const listing = listings.appendChild(document.createElement('div'));
+//         /* Assign a unique `id` to the listing. */
+//         listing.id = `listing-${meeting.properties.id}`;
+//         /* Assign the `item` class to each listing for styling. */
+//         listing.className = 'item';
+
+//         /* Add the link to the individual listing created above. */
+//         const link = listing.appendChild(document.createElement('a'));
+//         link.href = '#';
+//         link.className = 'title';
+//         link.id = `link-${meeting.properties.id}`;
+//         link.innerHTML = `${meeting.properties.publicbody}`;
+
+//         /* Add details to the individual listing. */
+//         const details = listing.appendChild(document.createElement('div'));
+//         details.innerHTML = `${meeting.properties.location}`;
+//         if (meeting.properties.phone) {
+//             details.innerHTML += ` &middot; ${meeting.properties.phoneFormatted}`;
+//         }
+
+//         /**
+//           * Listen to the element and when it is clicked, do four things:
+//           * 1. Update the `currentFeature` to the meeting associated with the clicked link
+//           * 2. Fly to the point
+//           * 3. Close all other popups and display popup for clicked meeting
+//           * 4. Highlight listing in sidebar (and remove highlight for all other listings)
+//           **/
+//         link.addEventListener('click', function () {
+//             for (const feature of meetings) {
+//                 if (this.id === `link-${feature.properties.id}`) {
+//                     flytoMeeting(feature.geometry.coordinates, 15);
+//                     createPopUp(feature);
+//                 }
+//             }
+//             const activeItem = document.getElementsByClassName('active');
+//             if (activeItem[0]) {
+//                 activeItem[0].classList.remove('active');
+//             }
+//             this.parentNode.classList.add('active');
+//         });
+//     }
+
+// }
+
+// /**
+//   * Use Mapbox GL JS's `flyTo` to move the camera smoothly
+//   * a given center point.
+//   * Defaults: coords = center of State, zoomLevel = state in focus
+//   **/
+// function flytoMeeting(coords = stateCoords, zoomLevel = defaultZoom) {
+//     map.flyTo({
+//         center: coords,
+//         zoom: zoomLevel
+//     });
+// }
+
+// /**
+//   * Create a Mapbox GL JS `Popup`.
+//   **/
+// function createPopUp(currentFeature) {
+//     const popUps = document.getElementsByClassName('mapboxgl-popup');
+//     if (popUps[0]) popUps[0].remove();
+//     const popup = new mapboxgl.Popup({ closeOnClick: false })
+//         .setLngLat(currentFeature.geometry.coordinates)
+//         .setHTML(
+//             `<h3><center>${currentFeature.properties.publicbody}</center></h3>
+//                         <h4>
+//                         <table>
+//                         <tr>
+//                         <th><center>Government</center></th>
+//                         <th><center>Public Body</center></th>
+//                         <th><center>Location</center></th>
+//                         </tr>
+//                         <tr>
+//                         <td><center>${currentFeature.properties.government}</center></td>
+//                         <td><center>${currentFeature.properties.publicbody}</center></td>
+//                         <td><center>${currentFeature.properties.location}</center></td>
+//                         </tr>
+//                         <tr>
+//                         <th><center>Address</center></th>
+//                         <th><center>Schedule</center></th>
+//                         <th><center>Start Time</center></th>
+//                         </tr>
+//                         <tr>
+//                         <td><center>${currentFeature.properties.address}</center></td>
+//                         <td><center>${currentFeature.properties.schedule}</center></td>
+//                         <td><center>${currentFeature.properties.start}</center></td>
+//                         </tr>
+//                         <tr>
+//                         <th><center>End Time</center></th>
+//                         <th><center>Remote Options</center></th>
+//                         </tr>
+//                         <tr>
+//                         <td><center>${currentFeature.properties.end}</center></td>
+//                         <td><center>${currentFeature.properties.remote}</center></td>
+//                         </h4>`
+//         )
+//         .addTo(map);
+// }
+
+// //adding zoom and rotation controls to map
+// map.addControl(new mapboxgl.NavigationControl());

@@ -2,31 +2,28 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"> -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Bootstrap 5 Stylings -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <!-- Bootstrap 5 JS -->
-   <script
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <!-- Bootstrap 5 JS -->
+    <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous" defer></script>
+
     <!-- Mapbox Styles and JS -->
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
 
-  <!-- <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet"> -->
-  <!-- <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script> -->
+    <!-- Page Styling -->
+    <link href="styles/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="scripts/mapScript.js" defer></script>
 
-  <!-- Page Styling -->
-  <link href="styles/styles.css" rel="stylesheet">
-  <script type="text/javascript" src="scripts/mapScript.js" defer></script>
-
-  <title>Open Meeting Toolkit</title>
+    <title>Open Meeting Toolkit</title>
 </head>
 
 <body>
@@ -34,34 +31,38 @@
         <nav class="navbar navbar-expand-lg" aria-label="site navbar">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><span>Open Meeting Toolkit</span> for the Carolinas</a>
-                <button class="navbar-toggler mx-auto" type="button" data-bs-toggle="collapse" data-bs-target="#site-navbar" aria-controls="site-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <button
+                    class="navbar-toggler mx-auto" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#site-navbar"
+                    aria-controls="site-navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="site-navbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#introduction-section">Introduction</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#scan-section">Local Scan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#evaluation-section">Evaluation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#recommendations-section">Recommendations</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#faq-section">FAQ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact-section">Contact</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#introduction-section">Introduction</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#scan-section">Local Scan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#evaluation-section">Evaluation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#recommendations-section">Recommendations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#faq-section">FAQ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact-section">Contact</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <main>
         <!--Introduction & Map Section-->
         <section id="introduction-section">
@@ -72,26 +73,6 @@
                 while engaging civic technology volunteers.
             </p>
             <br>
-
-            <!-- This can be refactored to use some JavaScript instead -->
-
-<!--
-            <figure class="row border border-5 border-dark">
-                <iframe src="publicmeetings.html" width="90%" height="550px" title="Map of Public Meetings in the Carolinas">
-                </iframe>
-                <figcaption class="'text-center">
-                    Map of public meetings in the Carolinas.
-                    <br>
-                    Map is a proof-of-concept prototype and may not be current.
-                    <br>
-                    <b>Confirm meeting details before attending</b>.
-                </figcaption>
-            </figure>
--->
-
-            <div class="row border border-5 border-dark">
-                <div id="map" class="map"></div>
-            </div>
 
             <h2>Introduction</h2>
             <p>
@@ -109,6 +90,11 @@
                 A team leader should create a Google Folder for your team's files related to the Open Meeting Toolkit. At least one member of your team should be proficient with the Google Suite.
                 GitHub knowledge will only be needed if your team chooses to host a local copy of the map.
             </p>
+
+            <div class="row border border-5 border-dark">
+                <div id="map" class="map" style='width: 400px; height: 300px;'></div>
+            </div>
+
         </section>
 
         <!--Local Scan & Toolkit Instruction Section-->
@@ -1174,7 +1160,6 @@
 
         </section>
 
-
         <section id="recommendations-section">
         <h2>Recommendations</h2>
         <br>
@@ -1224,6 +1209,7 @@
             standard format, ICS (Internet Calendar Scheduling).</li>
         </ul>
         </section>
+
         <section id="faq-section">
         <h2>Frequently Asked Questions</h2>
 
@@ -1253,71 +1239,6 @@
             invite you to <a href="https://github.com/Code-for-the-Carolinas/openmeetingtoolkit" target="_blank">collaborate
             with us on GitHub</a>. You are also welcome
             to contact Code for the Carolinas by email: info at codeforthecarolinas dot org.</p>
-        <br>
-        <h3>Is the Toolkit suitable for research?</h3>
-        <p>No, the Toolkit provides a structure and resources for local teams to make observations to help inform
-            improvements to public meetings in
-            their own communities. Findings from the Toolkit are not intended for publication or as contributions to general
-            knowledge. Use of the Toolkit may
-            involve recording some public information about public officials, but in general the Toolkit is for recording
-            information about public meetings, not about people.</p>
-        </section>
-        <section id="contact-section">
-        <h2>Contact</h2>
-        <!-- <a href = "mailto: info@codeforthecarolinas.org">info@codeforthecarolinas.org</a> -->
-        info at codeforthecarolinas dot org
-        </section>
-    <footer>
-      <div id="footer-section">
-        <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/">
-          <a property="dct:title" rel="cc:attributionURL"
-            href="https://code-for-the-carolinas.github.io/openmeetingtoolkit/">Open Meeting Toolkit for the
-            Carolinas</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName"
-            href="http://codeforthecarolinas.org/">Code for the Carolinas</a> is licensed under <a
-            href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank"
-            rel="license noopener noreferrer" style="display:inline-block;">CC BY 4.0</a>
-        </p>
-        <ul>
-            <li>The <a href="https://councildataproject.org/" target="_blank">Council Data Project</a> provides a model for
-            hosting recordings of local government meetings.</li>
-            <li>Digitizing city records, such as agendas and minutes, following <a
-                href="https://phildini.dev/digitizing-55-000-pages-of-civic-meetings" target="_blank">this model</a>.</li>
-            <li>Maintaining a map of public meetings for your county and/ or providing downloadable calendar notices in the
-            standard format, ICS (Internet Calendar Scheduling).</li>
-        </ul>
-        </section>
-
-        <section id="faq-section">
-        <h2>Frequently Asked Questions</h2>
-
-        <h3>What is a public meeting?</h3>
-        <p>We use the term public meeting to refer to local government meetings that are required by law (<a
-            href="https://www.ncleg.net/EnactedLegislation/Statutes/PDF/ByArticle/Chapter_143/Article_33C.pdf"
-            target="_blank">"NC General Statute Chapter 143 33C"</a>) to allow the public to
-            attend and, in some cases, to provide public comment. From the statute: "public body" means any elected or
-            appointed authority, board, commission, committee, council,
-            or other body of the State, or of one or more counties, cities, school administrative units, constituent
-            institutions of The University of North Carolina, or other political
-            subdivisions or public corporations in the State that (i) is composed of two or more members and (ii) exercises
-            or is authorized to exercise a legislative, policy-making,
-            quasi-judicial, administrative, or advisory function." There are a few additional considerations, so if you are
-            in doubt, please consult the statute.</p>
-        <br>
-        <h3>Can I use the Open Meeting Toolkit for the Carolinas in other places besides North Carolina?</h3>
-        <p>There is some interest in adapting the Toolkit for use in other places. Right now, it provides resources for
-            North Carolina.</p>
-        <br>
-        <h3>Can a team use the Open Meeting Toolkit without a team leader?</h3>
-        <p>Yes, the Toolkit can be used by self-directed teams who share responsibility for leadership.</p>
-        <br>
-        <h3>What if I notice a technical problem or want to suggest an improvement?</h3>
-        <p>The Toolkit is being developed by civic technology volunteers. If you are a civic technology volunteer yourself
-            and know how to fix the problem, we
-            invite you to <a href="https://github.com/Code-for-the-Carolinas/openmeetingtoolkit" target="_blank">collaborate
-            with us on GitHub</a>.
-        <br>
-        <h3>What if we didn't attach the Analysis Spreadsheet to our Google Form?</h3>
-        <p>If you didn't attach the spreadsheet before collecting responses, you can still use the analysis macros. Copy your responses from the Responses tab of the Form to the Analysis Spreadsheet.
         <br>
         <h3>Is the Toolkit suitable for research?</h3>
         <p>No, the Toolkit provides a structure and resources for local teams to make observations to help inform
