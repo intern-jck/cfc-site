@@ -15,6 +15,10 @@ const getMeetings = () => {
 };
 
 
+const createDiv = () => {
+    return
+}
+
 // Sort meeting list to organize meetings by county
 function getMeetingsByCounty(meetings) {
 
@@ -41,50 +45,54 @@ function getMeetingsByCounty(meetings) {
     }, []);
 }
 
-// Adds
+
+
+const showMeeting = (event) => {
+    const {id} = event.target;
+    console.log(id);
+};
+
+
+// Adds the meetingsByCounty list to the page
 function addCountysToMap(meetingList) {
-    const countyList = getMeetingsByCounty(meetingList)
-    const counties = document.querySelector('#counties');
 
-    /* Sort list of counties */
-    const sortedCounties = Object.keys(countyList).sort((c1, c2) => c1.localeCompare(c2))
+    const meetingsByCountyList = getMeetingsByCounty(meetingList)
+    const countiesDiv = document.querySelector('#counties');
 
-    for (const countyName of sortedCounties) {
+    // Create a list of county names sorted alphabetically.
+    const countyNamesSorted = Object.keys(meetingsByCountyList).sort((c1, c2) => c1.localeCompare(c2))
 
-        /* Add a new county listing section to the sidebar. */
-        const county = counties.appendChild(document.createElement('div'));
-        /* Assign the `item` class to each listing for styling. */
-        county.className = 'item';
+    for (const countyName of countyNamesSorted) {
 
-        /* Add the link to the individual listing created above. */
-        const link = county.appendChild(document.createElement('a'));
-        link.href = '#';
-        link.className = 'title';
-        link.id = `${countyName}`;
-        link.innerHTML = `${countyName}`
-
+        // Create a new div for the county.
+        const countyDiv = document.createElement('div');
+        countyDiv.className = 'item border border-4 border-primary';
+        const countyButton = countyDiv.appendChild(document.createElement('button'));
+        // countyButton.href = '#';
+        countyButton.className = 'county-btn';
+        countyButton.id = `${countyName}`;
+        countyButton.innerHTML = `${countyName}`
+        countyButton.onclick = showMeeting;
+        countiesDiv.appendChild(countyDiv);
     }
-    /**
-      * Uses event delegation to listen for clicks on list items
-      * Build meeting list for the county and add markers to map
-      **/
 
-    counties.addEventListener('click', function(event) {
-        // ignore if not clicking on link
-        if(!event.target.matches('.title')) return
-        event.preventDefault();
+    // countiesDiv.addEventListener('click', function(event) {
+    //     // ignore if not clicking on link
+    //     // if(!event.target.matches('.title')) return
+    //     // event.preventDefault();
 
-        // hide counties list when a county is clicked
-        counties.style.display = 'none'
+    //     // hide counties list when a county is clicked
+    //     // counties.style.display = 'none'
 
-        const meetingList = countyList[event.target.id]
+    //     // const meetingList = countyList[event.target.id]
 
-        /* Fly to general are of listings*/
-        flytoMeeting(meetingList[0].geometry.coordinates, 8)
-        buildLocationList(meetingList)
-        addMarkers(meetingList)
-    }, false)
-    return countyList
+    //     /* Fly to general are of listings*/
+    //     // flytoMeeting(meetingList[0].geometry.coordinates, 8)
+    //     // buildLocationList(meetingsByCountyList)
+    //     // addMarkers(meetingList)
+    // })
+
+    return countiesDiv;
 }
 
 
