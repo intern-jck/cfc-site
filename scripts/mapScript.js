@@ -45,13 +45,18 @@ function getMeetingsByCounty(meetings) {
     }, []);
 }
 
-
-
 const showMeeting = (event) => {
     const {id} = event.target;
     console.log(id);
 };
 
+
+function flytoMeeting(meeting) {
+    map.flyTo({
+        center: meeting.geometry.coordinates,
+        zoom: 15
+    });
+};
 
 // Adds the meetingsByCounty list to the page
 function addCountysToMap(meetingList) {
@@ -63,44 +68,19 @@ function addCountysToMap(meetingList) {
     const countyNamesSorted = Object.keys(meetingsByCountyList).sort((c1, c2) => c1.localeCompare(c2))
 
     for (const countyName of countyNamesSorted) {
-
         // Create a new div for the county.
         const countyDiv = document.createElement('div');
         countyDiv.className = 'item border border-4 border-primary';
-        const countyButton = countyDiv.appendChild(document.createElement('button'));
-        // countyButton.href = '#';
+        const countyButton = document.createElement('button');
         countyButton.className = 'county-btn';
         countyButton.id = `${countyName}`;
         countyButton.innerHTML = `${countyName}`
         countyButton.onclick = showMeeting;
+        countyDiv.appendChild(countyButton);
         countiesDiv.appendChild(countyDiv);
     }
-
-    // countiesDiv.addEventListener('click', function(event) {
-    //     // ignore if not clicking on link
-    //     // if(!event.target.matches('.title')) return
-    //     // event.preventDefault();
-
-    //     // hide counties list when a county is clicked
-    //     // counties.style.display = 'none'
-
-    //     // const meetingList = countyList[event.target.id]
-
-    //     /* Fly to general are of listings*/
-    //     // flytoMeeting(meetingList[0].geometry.coordinates, 8)
-    //     // buildLocationList(meetingsByCountyList)
-    //     // addMarkers(meetingList)
-    // })
-
     return countiesDiv;
 }
-
-
-
-
-
-
-
 
 
 
@@ -119,3 +99,7 @@ map.on('style.load', () => {
     // map.setFog({}); // Set the default atmosphere style
     getMeetings();
 });
+
+
+            //adding zoom and rotation controls to map
+            map.addControl(new mapboxgl.NavigationControl());
