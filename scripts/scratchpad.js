@@ -2,23 +2,25 @@
 // /**
 //  * Wait until the map loads to make changes to the map.
 //  */
-// map.on('load', () => {
+map.on('load', () => {
+  buildLocationList(meetings);
+  addMarkers(meetings);
+  console.log('map loaded');
 
-//     // buildLocationList(meetings);
-//     // addMarkers(meetings);
-//     console.log('map loaded');
+  .then(moreMeetings => {
 
-//     // .then(moreMeetings => {
-//     //     map.addSource('morePlaces', {
-//     //         'type': 'geojson',
-//     //         'data': moreMeetings
-//     //     });
-//     //     buildCountyList(moreMeetings)
-//     // })
-//     // .catch((error) => {
-//     //   console.log('failed to get meetings', error)
-//     // });
-// });
+    // https://docs.mapbox.com/help/glossary/geojson/
+      map.addSource('morePlaces', {
+          'type': 'geojson',
+          'data': moreMeetings
+      });
+      buildCountyList(moreMeetings)
+  })
+  .catch((error) => {
+    console.log('failed to get meetings', error)
+  });
+
+});
 
 
 

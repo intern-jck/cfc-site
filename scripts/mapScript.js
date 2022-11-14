@@ -1,23 +1,25 @@
+// https://geojson.org/
+// https://docs.mapbox.com/
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2N0aGVncmVhdCIsImEiOiJjbDI2a2lodnYwMnRnM2ZvdXVhZXNjbHd0In0.4CfhKr_VP1IDEM08Nk7PXg';
-const stateCoords = [-79.8, 35.3];
-const defaultZoom = 6;
+
+// Put your city's cordinates here.
+const stateCoords = [ -78.8986, 35.9940];
+const defaultZoom = 10;
 
 // Fetch meetings.json
-// TODO: Refactor to fetch from database instead of locally
+// TODO:
+// Refactor to fetch from database instead of locally
+// Refactor data to sort meetings by county?
 const getMeetings = () => {
-    fetch('assets/meetings2.json')
+    return fetch('assets/meetings2.json')
         .then((response) => (response.json()))
         .then((data) => {
-            console.log(getMeetingsByCounty(data))
-            addCountysToMap(data)
+            return data;
         })
         .catch((error) => (console.log('error getting mettings', error)));
 };
-
-
-const createDiv = () => {
-    return
-}
 
 // Sort meeting list to organize meetings by county
 function getMeetingsByCounty(meetings) {
@@ -45,12 +47,13 @@ function getMeetingsByCounty(meetings) {
     }, []);
 }
 
+// TODO: Implement function to show meeting when clicked
 const showMeeting = (event) => {
     const {id} = event.target;
     console.log(id);
 };
 
-
+// Goes to meeting location on map.
 function flytoMeeting(meeting) {
     map.flyTo({
         center: meeting.geometry.coordinates,
@@ -58,32 +61,33 @@ function flytoMeeting(meeting) {
     });
 };
 
-// Adds the meetingsByCounty list to the page
-function addCountysToMap(meetingList) {
+// Adds a list of meetings to the DOM.
+function addCountyListToDOM(meetingList) {
 
     const meetingsByCountyList = getMeetingsByCounty(meetingList)
     const countiesDiv = document.querySelector('#counties');
 
     // Create a list of county names sorted alphabetically.
-    const countyNamesSorted = Object.keys(meetingsByCountyList).sort((c1, c2) => c1.localeCompare(c2))
+    const countyNamesSorted = Object.keys(meetingsByCountyList).sort((c1, c2) => c1.localeCompare(c2));
 
+    // For each county in list,
     for (const countyName of countyNamesSorted) {
-        // Create a new div for the county.
+        // create a new div for the county,
         const countyDiv = document.createElement('div');
         countyDiv.className = 'item border border-4 border-primary';
+        // render each county as a button for better accessablitiy(sp),
         const countyButton = document.createElement('button');
         countyButton.className = 'county-btn';
         countyButton.id = `${countyName}`;
         countyButton.innerHTML = `${countyName}`
+        // add event to button to show meeting when clicked,
         countyButton.onclick = showMeeting;
+        // add button to div,
         countyDiv.appendChild(countyButton);
+        // then div to DOM.
         countiesDiv.appendChild(countyDiv);
     }
-    return countiesDiv;
 }
-
-
-
 
 // Create new map
 const map = new mapboxgl.Map({
@@ -96,10 +100,28 @@ const map = new mapboxgl.Map({
 
 // Add map to page when html loads mapbox style
 map.on('style.load', () => {
-    // map.setFog({}); // Set the default atmosphere style
-    getMeetings();
+
+    // Get all the meetings.
+    getMeetings()
+    .then((data) => {
+        addCountyListToDOM(data);
+        console.log(data)
+        map.addSource('meetings', {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': data,
+            }
+        });
+
+    })
+    .catch((error) => (console.log('Error on page load:', error)));
+
+    // addCountysToMap(meetings)
+
+
+
 });
 
-
-            //adding zoom and rotation controls to map
-            map.addControl(new mapboxgl.NavigationControl());
+//adding zoom and rotation controls to map
+map.addControl(new mapboxgl.NavigationControl());
