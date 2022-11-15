@@ -24,6 +24,69 @@ map.on('load', () => {
 
 
 
+        // create a new accordian item for the county,
+        const countyAccordionItem = document.createElement('div');
+        countyAccordionItem.className = 'accordion-item';
+
+        // Add the header for the accordion item.
+        const accordionHeader = document.createElement('h4');
+        accordionHeader.className = 'accordion-header';
+        // Should refactor to convert spaces to hyphens and lowercase letters.
+        accordionHeader.id = countyName;
+        console.log(countyName)
+        // The button will expand and collapse the accordion item.
+        const accordionButton = document.createElement('button');
+        accordionButton.className = 'accordion-button';
+        accordionButton.type = 'button';
+        accordionButton.dataset.bsToggle = 'collapse';
+        accordionButton.dataset.bsTarget = `#${countyName}-body`;
+        // accordionButton.ariaExpanded = false;
+        accordionButton.setAttribute('aria-expanded', false);
+        accordionButton.setAttribute('aria-controls', `${countyName}-body`);
+        // accordionButton.ariaControls = `${countyName}-body`;
+        accordionButton.textContent = countyName;
+        accordionHeader.appendChild(accordionButton);
+        countyAccordionItem.appendChild(accordionHeader);
+
+        // The accordion body will contain the meetings for the county.
+        const accordionBodyDiv = document.createElement('div');
+        accordionBodyDiv.id = `${countyName}-body`;        
+        accordionBodyDiv.className = 'accordion-collapse collapse';
+        // accordionBodyDiv['aria-labelledby'] = countyName;
+        // accordionBodyDiv['data-bs-parent'] = '#county-list';
+        // accordionBodyDiv.ariaLabelledBy = countyName;
+        accordionButton.setAttribute('aria-labelledby', countyName);
+        accordionBodyDiv.dataset.bsParent = '#county-list';
+
+        // // Which will be rendered as buttons which will show the info for
+        // // that meeting when clicked.
+        const accordionBody = document.createElement('div');
+        accordionBody.className = 'accordion-body';
+        accordionBody.textContent = 'test';
+        accordionBodyDiv.appendChild(accordionBody);
+        countyAccordionItem.appendChild(accordionBodyDiv);
+
+        // // for (let meeting of meetingsByCountyList[countyName]) {
+        // //     // console.log(meeting);
+        // //     const meetingButton = document.createElement('button');
+        // //     meetingButton.tectContent = meeting.properties.publicbody;
+        // //     accordionBodyDiv.appendChild(meetingButton);
+        // // }
+
+        
+        // const accordionBodyHeader = document.createElement('h3');
+        // console.log(meetingsByCountyList[countyName])
+        // accordionBodyHeader.textContent = meetingsByCountyList[countyName].properties.publicbody;
+        // accordionButton['aria-controls'] = 'collapseOne';
+        // accordionButton['aria-expanded'] = 'true';
+        
+
+        // Add the accordion item to the DOM.
+        // countyAccordion.appendChild(accordionBodyDiv);
+        countiesDiv.appendChild(countyAccordionItem);
+        
+
+
 
 
 
