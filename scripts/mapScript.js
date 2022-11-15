@@ -1,7 +1,6 @@
 // https://geojson.org/
 // https://docs.mapbox.com/
 
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2N0aGVncmVhdCIsImEiOiJjbDI2a2lodnYwMnRnM2ZvdXVhZXNjbHd0In0.4CfhKr_VP1IDEM08Nk7PXg';
 
 // Put your city's cordinates here.
@@ -49,13 +48,33 @@ function getMeetingsByCounty(meetings) {
 }
 
 // TODO: Implement function to show meeting when clicked
-const showMeeting = (event) => {
+const showMeetings = (meetings) => {
     const {id} = event.target;
-    console.log(id);
+    console.log(meetings);
+    // list meetings
+    const meetingList = document.getElementById('meeting-list');
+    clearDiv(meetingList)
+    for (let meeting of meetings) {
+        const meetingButton = document.createElement('button');
+        meetingButton.className = 'county-btn';
+        meetingButton.id = `${meeting.properties.id}`;
+        meetingButton.innerHTML = `${meeting.properties.publicbody}`;
+        meetingButton.onclick = () => {
+            flyToMeeting(meeting.geometry.coordinates)
+        };
+        meetingList.appendChild(meetingButton)
+    }
 };
 
+const clearDiv = (parent) => {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+
 // Goes to meeting location on map.
-function flytoMeeting(meetingLocation) {
+const flyToMeeting = (meetingLocation) => {
     map.flyTo({
         center: meetingLocation,
         zoom: 15
@@ -66,11 +85,10 @@ function flytoMeeting(meetingLocation) {
 function addCountyListToDOM(meetingList) {
 
     const meetingsByCountyList = getMeetingsByCounty(meetingList)
-    const countiesDiv = document.querySelector('#counties');
+    const countiesDiv = document.querySelector('#county-list');
 
     // Create a list of county names sorted alphabetically.
     const countyNamesSorted = Object.keys(meetingsByCountyList).sort((c1, c2) => c1.localeCompare(c2));
-
     // For each county in list,
     for (const countyName of countyNamesSorted) {
         // create a new div for the county,
@@ -82,7 +100,9 @@ function addCountyListToDOM(meetingList) {
         countyButton.id = `${countyName}`;
         countyButton.innerHTML = `${countyName}`
         // add event to button to show meeting when clicked,
-        countyButton.onclick = showMeeting;
+        countyButton.onclick = () => {
+            showMeetings(meetingsByCountyList[countyName]);
+        };
         // add button to div,
         countyDiv.appendChild(countyButton);
         // then div to DOM.
@@ -104,7 +124,11 @@ map.on('style.load', () => {
     // Get all the meetings.
     getMeetings()
     .then((data) => {
+
+        // Create the list of counties in the #map div.
         addCountyListToDOM(data);
+
+        // Adds all the meeting locations to the map.
         map.addSource('meetings', {
             'type': 'geojson',
             'data': {
@@ -113,6 +137,7 @@ map.on('style.load', () => {
             }
         });
 
+        // Adds a circle for each meeting location.
         // map.addLayer({
         //     'id': 'meeting-markers',
         //     'type': 'circle',
@@ -123,9 +148,11 @@ map.on('style.load', () => {
         //     },
         // });
 
+        // Create a MapBox marker for each meeting location.
         for (let i in data) {
             const marker = new mapboxgl.Marker({
                 'anchor': 'center',
+                // Create custom element for marker.
                 // 'element': document.createElement('div'),
             })
             .setLngLat(data[i].geometry.coordinates)
@@ -134,10 +161,6 @@ map.on('style.load', () => {
 
     })
     .catch((error) => (console.log('Error on page load:', error)));
-
-    // addCountysToMap(meetings)
-
-
 
 });
 

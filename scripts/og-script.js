@@ -274,6 +274,7 @@ map.on('load', () => {
 /**
   * Add a marker to the map for every meeting listing.
   **/
+
 function addMarkers(meetings) {
     /* For each feature in the GeoJSON object above: */
     for (const marker of meetings.features) {
@@ -320,13 +321,17 @@ function addMarkers(meetings) {
 /**
  * Add a listing for each meeting to the sidebar.
  **/
+
 function buildLocationList(meetings) {
     for (const meeting of meetings.features) {
+
         /* Add a new listing section to the sidebar. */
         const listings = document.getElementById('listings');
         const listing = listings.appendChild(document.createElement('div'));
+
         /* Assign a unique `id` to the listing. */
         listing.id = `listing-${meeting.properties.id}`;
+
         /* Assign the `item` class to each listing for styling. */
         listing.className = 'item';
 
