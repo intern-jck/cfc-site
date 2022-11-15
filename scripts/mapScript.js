@@ -5,7 +5,8 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2N0aGVncmVhdCIsImEiOiJjbDI2a2lodnYwMnRnM2ZvdXVhZXNjbHd0In0.4CfhKr_VP1IDEM08Nk7PXg';
 
 // Put your city's cordinates here.
-const stateCoords = [ -78.8986, 35.9940];
+// const stateCoords = [ -78.8986, 35.9940];
+const stateCoords = [ -82.554016, 35.60095];
 const defaultZoom = 10;
 
 // Fetch meetings.json
@@ -54,9 +55,9 @@ const showMeeting = (event) => {
 };
 
 // Goes to meeting location on map.
-function flytoMeeting(meeting) {
+function flytoMeeting(meetingLocation) {
     map.flyTo({
-        center: meeting.geometry.coordinates,
+        center: meetingLocation,
         zoom: 15
     });
 };
@@ -94,8 +95,7 @@ const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/streets-v11', // style URL
     center: stateCoords,
-    zoom:defaultZoom
-    // projection: 'globe' // display the map as a 3D globe
+    zoom:defaultZoom,
 });
 
 // Add map to page when html loads mapbox style
@@ -105,7 +105,6 @@ map.on('style.load', () => {
     getMeetings()
     .then((data) => {
         addCountyListToDOM(data);
-        console.log(data)
         map.addSource('meetings', {
             'type': 'geojson',
             'data': {
@@ -113,6 +112,25 @@ map.on('style.load', () => {
                 'features': data,
             }
         });
+
+        // map.addLayer({
+        //     'id': 'meeting-markers',
+        //     'type': 'circle',
+        //     'source': 'meetings',
+        //     'paint': {
+        //         'circle-radius': 4,
+        //         'circle-color': '#B42222'
+        //     },
+        // });
+
+        for (let i in data) {
+            const marker = new mapboxgl.Marker({
+                'anchor': 'center',
+                // 'element': document.createElement('div'),
+            })
+            .setLngLat(data[i].geometry.coordinates)
+            .addTo(map);
+        }
 
     })
     .catch((error) => (console.log('Error on page load:', error)));
