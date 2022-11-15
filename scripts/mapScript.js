@@ -8,6 +8,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2N0aGVncmVhdCIsImEiOiJjbDI2a2lodnYwMnRnM2Zvd
 const stateCoords = [ -82.554016, 35.60095];
 const defaultZoom = 10;
 
+
+//  ___General Helper Functions___
 // Fetch meetings.json
 // TODO:
 // Refactor to fetch from database instead of locally
@@ -20,6 +22,13 @@ const getMeetings = () => {
         })
         .catch((error) => (console.log('error getting mettings', error)));
 };
+
+const clearDiv = (parent) => {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 
 // Sort meeting list to organize meetings by county
 function getMeetingsByCounty(meetings) {
@@ -66,22 +75,10 @@ const showMeetings = (meetings) => {
     }
 };
 
-const clearDiv = (parent) => {
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-}
 
-
-// Goes to meeting location on map.
-const flyToMeeting = (meetingLocation) => {
-    map.flyTo({
-        center: meetingLocation,
-        zoom: 15
-    });
-};
 
 // Adds a list of meetings to the DOM.
+// TODO:  Refactor this to render accordians instead of buttons
 function addCountyListToDOM(meetingList) {
 
     const meetingsByCountyList = getMeetingsByCounty(meetingList)
@@ -91,9 +88,7 @@ function addCountyListToDOM(meetingList) {
     const countyNamesSorted = Object.keys(meetingsByCountyList).sort((c1, c2) => c1.localeCompare(c2));
     // For each county in list,
     for (const countyName of countyNamesSorted) {
-        // create a new div for the county,
-        const countyDiv = document.createElement('div');
-        countyDiv.className = 'item border border-4 border-primary';
+      
         // render each county as a button for better accessablitiy(sp),
         const countyButton = document.createElement('button');
         countyButton.className = 'county-btn';
@@ -104,11 +99,23 @@ function addCountyListToDOM(meetingList) {
             showMeetings(meetingsByCountyList[countyName]);
         };
         // add button to div,
-        countyDiv.appendChild(countyButton);
+        // countyDiv.appendChild(countyButton);
         // then div to DOM.
-        countiesDiv.appendChild(countyDiv);
+        countiesDiv.appendChild(countyButton);
     }
 }
+
+// ___MapBox Functions___
+
+// Goes to meeting location on map.
+const flyToMeeting = (meetingLocation) => {
+    map.flyTo({
+        center: meetingLocation,
+        zoom: 15
+    });
+};
+
+
 
 // Create new map
 const map = new mapboxgl.Map({
