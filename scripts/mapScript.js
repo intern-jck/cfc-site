@@ -118,44 +118,6 @@ const showMeetingInfo = (meeting) => {
     // add logic to find if popup exists before creating a new one.
     const {address, county, location, publicbody, start, end, remote, schedule} = meeting.properties;
 
-    // const meetingInfoDiv = document.getElementById('meeting-info');
-    // clearDiv(meetingInfoDiv);
-
-    // const meetingInfoTable = document.createElement('table');
-    // meetingInfoTable.innerHTML =
-    //     `<tr>
-    //         <th><center>Government</center></th>
-    //         <th><center>Public Body</center></th>
-    //         <th><center>Location</center></th>
-    //     </tr>
-    //     <tr>
-    //         <td><center>${county}</center></td>
-    //         <td><center>${publicbody}</center></td>
-    //         <td><center>${location}</center></td>
-    //     </tr>
-    //     <tr>
-    //         <th><center>Address</center></th>
-    //         <th><center>Schedule</center></th>
-    //         <th><center>Start Time</center></th>
-    //     </tr>
-    //     <tr>
-    //         <td><center>${address}</center></td>
-    //         <td><center>${schedule}</center></td>
-    //         <td><center>${start}</center></td>
-    //     </tr>
-    //     <tr>
-    //         <th><center>End Time</center></th>
-    //         <th><center>Remote Options</center></th>
-    //     </tr>
-    //     <tr>
-    //         <td><center>${end}</center></td>
-    //         <td><center>${remote}</center></td>
-    //     </tr>
-    //     `;
-
-    //     meetingInfoDiv.appendChild(meetingInfoTable);
-
-
     const popUps = document.getElementsByClassName('mapboxgl-popup');
     if (popUps[0]) {
         popUps[0].remove();
@@ -163,11 +125,11 @@ const showMeetingInfo = (meeting) => {
     const popup = new mapboxgl.Popup({
             closeOnClick: false,
             anchor: 'center',
-            maxWidth: 'none',
+            maxWidth: '80%',
             focusAfterOpen: false
         })
         .setHTML(
-            `<table class="meeting-info-table">
+            `<table class="meeting-info-table text-center">
                 <caption>${publicbody}</caption>
                 <tr>
                 <th>Government</th>
