@@ -9,10 +9,6 @@ const stateCoords = [ -82.554016, 35.60095];
 const defaultZoom = 10;
 
 //  ___General Helper Functions___
-// Fetch meetings.json
-// TODO:
-// Refactor to fetch from database instead of locally
-// Refactor data to sort meetings by county?
 const getMeetings = () => {
     return fetch('assets/meetings.json')
         .then((response) => (response.json()))
@@ -109,11 +105,6 @@ const flyToMeeting = (meetingLocation) => {
     });
 };
 
-const createMeetingPopup = () => {
-
-};
-
-
 const showMeetingInfo = (meeting) => {
     // add logic to find if popup exists before creating a new one.
     const {address, county, location, publicbody, start, end, remote, schedule} = meeting.properties;
@@ -192,17 +183,6 @@ map.on('style.load', () => {
                 'features': data,
             }
         });
-
-        // Adds a circle for each meeting location.
-        // map.addLayer({
-        //     'id': 'meeting-markers',
-        //     'type': 'circle',
-        //     'source': 'meetings',
-        //     'paint': {
-        //         'circle-radius': 4,
-        //         'circle-color': '#B42222'
-        //     },
-        // });
 
         // Create a MapBox marker for each meeting location.
         for (let i in data) {
