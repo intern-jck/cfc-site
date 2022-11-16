@@ -91,15 +91,15 @@
                 GitHub knowledge will only be needed if your team chooses to host a local copy of the map.
             </p>
 
-            <div class="row border border-5 border-dark">
-                <div class="row">
-                    <div id="county-list" class="col border border-5 border-dark">
+            <div class="row">
+                <div id="meeting-info" class="row">
+                    <div id="county-list" class="col flex-column">
                     </div>
-                    <div id="meeting-list" class="col border border-5 border-dark">
+                    <div id="meeting-list" class="col flex-column">
                     </div>
                 </div>
-                <div class="row">
-                        <div id="map" class="map" style='width: 400px; height: 300px;'></div>
+                <div id="meeting-map" class="row">
+                    <div id="map"></div>
                 </div>
             </div>
 
@@ -117,7 +117,6 @@
             <!-- https://getbootstrap.com/docs/5.2/components/accordion/ -->
             <details>
                 <summary>
-                <h3>Add Meetings to the Map</h3>
                 </summary>
                 <p>
                 The Public Meetings in North Carolina map is a tool to visualize and learn about public meetings in North
@@ -218,7 +217,9 @@
             </details>
 
             <div id="local-scan-accordion" class="accordion">
-                <div></div>
+                <div>
+                    <h3>Add Meetings to the Map</h3>
+                </div>
             </div>
 
 

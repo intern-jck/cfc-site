@@ -30,10 +30,7 @@ a {
 
 section {
     padding: 1em;
-}
-
-iframe {
-    border: 4px solid var(--font-color);
+    width: 100%;
 }
 
 p {
@@ -45,11 +42,53 @@ p {
     background-color: var(--secondary-color);
 }
 
+#meeting-info {
+    width: 100%;
+    height: 40vh;
+}
+
+
+#county-list {
+    border: 4px solid black;
+    /* padding: 1em; */
+    display: flex;
+}
+
+#meeting-list {
+    border: 4px solid black;
+    /* padding: 1em; */
+    display: flex;
+}
+
+.meeting-btn {
+    font-family: 'Poppins';
+    /* background-color: var(--primary-color); */
+    background-color: white;
+    color: var(--font-color);
+}
+
+.meeting-btn:hover {
+    background-color: var(--anchor-color)
+}
+
+#meeting-map {
+    border: 4px solid black;
+    width: 100%;
+    height: 60vh;
+}
+
+
+
+
 #scan-section{
     /* margin: 0 auto; */
     /* padding: 2em 2em 10em 10em; */
     background-color: #fff;
 }
+
+
+
+
 #scan-section h2{
     /* padding-bottom: 1em; */
     /* padding-top: 0.5em; */

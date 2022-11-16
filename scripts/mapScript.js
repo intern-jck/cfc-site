@@ -59,7 +59,7 @@ const showMeetings = (meetings) => {
     clearDiv(meetingList)
     for (let meeting of meetings) {
         const meetingButton = document.createElement('button');
-        meetingButton.className = 'county-btn';
+        meetingButton.className = 'meeting-btn';
         meetingButton.id = `${meeting.properties.id}`;
         meetingButton.innerHTML = `${meeting.properties.publicbody}`;
         meetingButton.onclick = () => {
@@ -89,18 +89,15 @@ const addCountyListToDOM = (meetingList) => {
 
         // render each county as a button for better accessablitiy(sp),
         const countyButton = document.createElement('button');
-        countyButton.className = 'county-btn';
+        countyButton.className = 'meeting-btn';
         countyButton.id = `${countyName}`;
-        countyButton.innerHTML = `${countyName}`
+        countyButton.textContent = `${countyName}`
         // add event to button to show meeting when clicked,
-        countyButton.onclick = () => {
+        countyButton.onclick = (event) => {
+            event.preventDefault();
             showMeetings(meetingsByCountyList[countyName]);
         };
-        // add button to div,
-        // countyDiv.appendChild(countyButton);
-        // then div to DOM.
         countiesDiv.appendChild(countyButton);
-
     }
 };
 
