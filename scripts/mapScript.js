@@ -67,10 +67,7 @@ const showMeetings = (meetings) => {
     }
 };
 
-
-
 // Adds a list of meetings to the DOM.
-// TODO:  Refactor this to render accordians instead of buttons
 const addCountyListToDOM = (meetingList) => {
 
     const meetingsByCountyList = sortMeetingsByCounty(meetingList)
@@ -95,8 +92,6 @@ const addCountyListToDOM = (meetingList) => {
     }
 };
 
-// ___MapBox Functions___
-
 // Goes to meeting location on map.
 const flyToMeeting = (meetingLocation) => {
     map.flyTo({
@@ -105,6 +100,7 @@ const flyToMeeting = (meetingLocation) => {
     });
 };
 
+// Shows the meeting info as a popup in the map.
 const showMeetingInfo = (meeting) => {
     // add logic to find if popup exists before creating a new one.
     const {address, county, location, publicbody, start, end, remote, schedule} = meeting.properties;
@@ -155,8 +151,6 @@ const showMeetingInfo = (meeting) => {
         .addTo(map);
 };
 
-
-
 // Create new map
 const map = new mapboxgl.Map({
     container: 'map', // container ID
@@ -187,9 +181,7 @@ map.on('style.load', () => {
         // Create a MapBox marker for each meeting location.
         for (let i in data) {
             const marker = new mapboxgl.Marker({
-                'anchor': 'center',
-                // Create custom element for marker.
-                // 'element': document.createElement('div'),
+                'anchor': 'center',setLngLat
             })
             .setLngLat(data[i].geometry.coordinates)
             .addTo(map);
@@ -197,7 +189,6 @@ map.on('style.load', () => {
 
     })
     .catch((error) => (console.log('Error on page load:', error)));
-
 });
 
 //adding zoom and rotation controls to map
