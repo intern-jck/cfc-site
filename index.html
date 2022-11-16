@@ -107,16 +107,15 @@
 
         </section>
 
+        <!-- Could refactor each section to use Boostrap accordians -->
+        <!-- https://getbootstrap.com/docs/5.2/components/accordion/ -->
         <section id="scan-section">
-            <h2>Local Scan</h2>
+            <!-- <h2>Local Scan</h2>
             <p>
                 Start by getting to know some background about public meetings in your community. The Toolkit's local scan
                 includes two activities to help you prepare: a map of public meetings and an environmental scan, called a STEEPLE analysis. Consider hosting
                 one or more kickoff events for your team to do these activities as they prepare to use the Toolkit.
             </p>
-            <!--Map Instructions-->
-            <!-- Could refactor this to use Boostrap accordians -->
-            <!-- https://getbootstrap.com/docs/5.2/components/accordion/ -->
             <details>
                 <summary>
                 </summary>
@@ -216,11 +215,128 @@
                 </tr>
                 </table>
 
-            </details>
+            </details> -->
 
-            <div id="local-scan-accordion" class="accordion">
-                <div>
-                    <h3>Add Meetings to the Map</h3>
+            <div class="local-scan-accordion">
+                <h2 class="accordion-headersss" id="local-scan-accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#local-scan-content"
+                    aria-expanded="false"
+                    aria-controls="local-scan-content">
+                      Local Scan
+                  </button>
+                </h2>
+
+                <p>
+                    Start by getting to know some background about public meetings in your community. The Toolkit's local scan
+                    includes two activities to help you prepare: a map of public meetings and an environmental scan, called a STEEPLE analysis. Consider hosting
+                    one or more kickoff events for your team to do these activities as they prepare to use the Toolkit.
+                </p>
+                <div
+                  id="local-scan-content"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="local-scan-accordion-header"
+                  data-bs-parent="#scan-section">
+                  <div class="accordion-body">
+                    <p>
+                        The Public Meetings in North Carolina map is a tool to visualize and learn about public meetings in North
+                        Carolina.
+                        </p>
+                        <ul>
+                        <li>Adding meetings to the map is a jump-right-in activity that lets any new volunteer contribute to the project.</li>
+                        <li>The map can be a compelling visual for outreach to engage new participants. </li>
+                        <li>The map can be useful to local teams planning to evaluate meetings. </li>
+                        <li>Neither Sunshine Request nor Code for the Carolinas has committed to completing or maintaining a statewide map. Your team also has no obligation to complete or maintain a local map. If you identify a local community organization with a
+                        long-term interest in open government, you may want to consider making a local version of the map for that partner organization to host and maintain.</li>
+                        </ul>
+                        <p>
+                        <strong>COMPLETE INSTRUCTIONS AND OFFICIAL DATA DICTIONARY WILL BE PROVIDED HERE</strong>
+                        To add meetings to the statewide map, provide a comma-separated value (.csv) file containing the fields from the Data
+                        Dictionary to the Sunshine Request team.
+                        Include as many fields as possible for the meetings in your community, keeping in mind that some information
+                        may not be available online. You can collect this
+                        data in any spreadsheet program. Once you have collected the data, export it in .csv format and save it as
+                        meetings.csv. Provide it to Sunshine Request.
+                        </p>
+                        <h4>Data Dictionary</h4>
+                        <table>
+                        <tr>
+                            <th>Field</th>
+                            <th>Definition</th>
+                            <th>Format</th>
+                            <th>Example</th>
+                        </tr>
+                            <tr>
+                            <td> Government </td>
+                            <td> Local government for which the meeting is held, such as a city or county. Include the word “County” for each county. Do not include words such as “City of” or “Town of.” </td>
+                            <td> Text </td>
+                            <td> Asheville, Buncombe County</td>
+                        </tr>
+                        <tr>
+                            <td> Public body </td>
+                            <td> Local government board or commission holding the meeting.</td>
+                            <td> Text </td>
+                            <td> Asheville Planning Board </td>
+                        </tr>
+                        <tr>
+                            <td> Location </td>
+                            <td> Public place or building for which the meeting is held </td>
+                            <td> Text </td>
+                            <td> City Hall </td>
+                        </tr>
+                        <tr>
+                            <td> Address </td>
+                            <td> Postal address of the meeting location </td>
+                            <td> Text </td>
+                            <td> 123 Address Street, City, ST 54321 </td>
+                        </tr>
+                        <tr>
+                            <td> Latitude </td>
+                            <td> Distance north or south of the equator </td>
+                            <td> Numeric </td>
+                            <td> 35.05118986 </td>
+                        </tr>
+                        <tr>
+                            <td> Longitude </td>
+                            <td> Distance east or west of the zero meridian </td>
+                            <td> Numeric </td>
+                            <td> -78.87702582 </td>
+                        </tr>
+                        <tr>
+                            <td> Schedule </td>
+                            <td> Days on which the meeting is regularly held. Can also be specific dates for the coming year if the meeting schedule is not regular. </td>
+                            <td> Text </td>
+                            <td> 2nd Tuesday of the month </td>
+                        </tr>
+                        <tr>
+                            <td> Start time </td>
+                            <td> Time at which the meeting starts </td>
+                            <td> Time </td>
+                            <td> 0.541666667 </td>
+                        </tr>
+                        <tr>
+                            <td> End time </td>
+                            <td> Time at which the meeting ends </td>
+                            <td> Time </td>
+                            <td> 0.625 </td>
+                        </tr>
+                        <tr>
+                            <td> Remote options </td>
+                            <td> Description of options to attend the meeting online </td>
+                            <td> Text </td>
+                            <td> Zoom </td>
+                        </tr>
+                        <tr>
+                            <td> Source </td>
+                            <td> Webpage of the government and public body holding the meeting. If possible, this should be the official government page rather than social media or another unofficial source.</td>
+                            <td> URL </td>
+                            <td> https://www.buncombecounty.org/transparency/boards-commissions/default.aspx </td>
+                        </tr>
+                        </table>
+                </div>
                 </div>
             </div>
 
