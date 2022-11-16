@@ -9,8 +9,15 @@ const stateCoords = [ -82.554016, 35.60095];
 const defaultZoom = 10;
 
 //  ___General Helper Functions___
+const clearDiv = (parent) => {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+};
+
+// Get the meeting data.
 const getMeetings = () => {
-    return fetch('assets/meetings.json')
+    return fetch('assets/meetingsFull.json')
         .then((response) => (response.json()))
         .then((data) => {
             return data;
@@ -18,18 +25,12 @@ const getMeetings = () => {
         .catch((error) => (console.log('error getting mettings', error)));
 };
 
-const clearDiv = (parent) => {
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-};
-
-// Sort meeting list to organize meetings by county
-const sortMeetingsByCounty = (meetings) => {
+// Groups meetings by county then sorts A-Z
+const groupMeetingsByCounty = (meetings) => {
     // For each meeting in the meeting list,
     return meetings.reduce((meetingsByCounty, item) => {
         // get the county the meeting is in,
-        const county = item.properties.county;
+        const county = item.properties.government;
         // if county is not blank,
         if (county) {
             // check if it's in our new list,
@@ -70,7 +71,7 @@ const showMeetings = (meetings) => {
 // Adds a list of meetings to the DOM.
 const addCountyListToDOM = (meetingList) => {
 
-    const meetingsByCountyList = sortMeetingsByCounty(meetingList)
+    const meetingsByCountyList = groupMeetingsByCounty(meetingList)
     const countiesDiv = document.querySelector('#county-list');
 
     // Create a list of county names sorted alphabetically.
@@ -83,6 +84,7 @@ const addCountyListToDOM = (meetingList) => {
         countyButton.className = 'meeting-btn';
         countyButton.id = `${countyName}`;
         countyButton.textContent = `${countyName}`
+
         // add event to button to show meeting when clicked,
         countyButton.onclick = (event) => {
             event.preventDefault();
