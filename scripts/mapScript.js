@@ -181,7 +181,7 @@ map.on('style.load', () => {
         // Create a MapBox marker for each meeting location.
         for (let i in data) {
             const marker = new mapboxgl.Marker({
-                'anchor': 'center',setLngLat
+                'anchor': 'center',
             })
             .setLngLat(data[i].geometry.coordinates)
             .addTo(map);
