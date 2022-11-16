@@ -42,7 +42,7 @@ p {
     background-color: var(--secondary-color);
 }
 
-#meeting-info {
+#meeting-gui {
     width: 100%;
     height: 40vh;
 }

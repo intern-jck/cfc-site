@@ -56,7 +56,7 @@ const showMeetings = (meetings) => {
     console.log(meetings);
     // list meetings
     const meetingList = document.getElementById('meeting-list');
-    clearDiv(meetingList)
+    clearDiv(meetingList);
     for (let meeting of meetings) {
         const meetingButton = document.createElement('button');
         meetingButton.className = 'meeting-btn';
@@ -120,40 +120,82 @@ const showMeetingInfo = (meeting) => {
     console.log(meeting)
     // add logic to find if popup exists before creating a new one.
     const {address, county, location, publicbody, start, end, remote, schedule} = meeting.properties;
-    const popup = new mapboxgl.Popup({ closeOnClick: false })
-        .setLngLat(meeting.geometry.coordinates)
+
+    // const meetingInfoDiv = document.getElementById('meeting-info');
+    // clearDiv(meetingInfoDiv);
+
+    // const meetingInfoTable = document.createElement('table');
+    // meetingInfoTable.innerHTML =
+    //     `<tr>
+    //         <th><center>Government</center></th>
+    //         <th><center>Public Body</center></th>
+    //         <th><center>Location</center></th>
+    //     </tr>
+    //     <tr>
+    //         <td><center>${county}</center></td>
+    //         <td><center>${publicbody}</center></td>
+    //         <td><center>${location}</center></td>
+    //     </tr>
+    //     <tr>
+    //         <th><center>Address</center></th>
+    //         <th><center>Schedule</center></th>
+    //         <th><center>Start Time</center></th>
+    //     </tr>
+    //     <tr>
+    //         <td><center>${address}</center></td>
+    //         <td><center>${schedule}</center></td>
+    //         <td><center>${start}</center></td>
+    //     </tr>
+    //     <tr>
+    //         <th><center>End Time</center></th>
+    //         <th><center>Remote Options</center></th>
+    //     </tr>
+    //     <tr>
+    //         <td><center>${end}</center></td>
+    //         <td><center>${remote}</center></td>
+    //     </tr>
+    //     `;
+
+    //     meetingInfoDiv.appendChild(meetingInfoTable);
+
+
+    const popup = new mapboxgl.Popup({
+            closeOnClick: false,
+            anchor: 'right'
+        })
         .setHTML(
-            `<div class='row border border-4 border-dark'>
-            <h3><center>${publicbody}</center></h3>
-            <table>
-            <tr>
-            <th><center>Government</center></th>
-            <th><center>Public Body</center></th>
-            <th><center>Location</center></th>
-            </tr>
-            <tr>
-            <td><center>${county}</center></td>
-            <td><center>${publicbody}</center></td>
-            <td><center>${location}</center></td>
-            </tr>
-            <tr>
-            <th><center>Address</center></th>
-            <th><center>Schedule</center></th>
-            <th><center>Start Time</center></th>
-            </tr>
-            <tr>
-            <td><center>${address}</center></td>
-            <td><center>${schedule}</center></td>
-            <td><center>${start}</center></td>
-            </tr>
-            <tr>
-            <th><center>End Time</center></th>
-            <th><center>Remote Options</center></th>
-            </tr>
-            <tr>
-            <td><center>${end}</center></td>
-            <td><center>${remote}</center></td>
+            `<table>
+                <caption>${publicbody}</caption>
+                <tr>
+                <th>Government</th>
+                <th>Public Body</th>
+                <th>Location</th>
+                </tr>
+                <tr>
+                <td>${county}</td>
+                <td>${publicbody}</td>
+                <td>${location}</td>
+                </tr>
+                <tr>
+                <th>Address</th>
+                <th>Schedule</th>
+                <th>Start Time</th>
+                </tr>
+                <tr>
+                <td>${address}</td>
+                <td>${schedule}</td>
+                <td>${start}</td>
+                </tr>
+                <tr>
+                <th>End Time</th>
+                <th>Remote Options</th>
+                </tr>
+                <tr>
+                <td>${end}</td>
+                <td>${remote}</td>
+                </table>
             </div>`)
+        .setLngLat(meeting.geometry.coordinates)
         .addTo(map);
 };
 
