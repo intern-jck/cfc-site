@@ -62,11 +62,9 @@ const showMeetings = (meetings) => {
         meetingButton.className = 'meeting-btn';
         meetingButton.id = `${meeting.properties.id}`;
         meetingButton.innerHTML = `${meeting.properties.publicbody}`;
-        meetingButton.onclick = () => {
+        meetingButton.onclick = (event) => {
+            event.preventDefault();
             flyToMeeting(meeting.geometry.coordinates);
-            if (this.__popup) {
-                console.log('popup found!')
-            }
             showMeetingInfo(meeting);
         };
         meetingList.appendChild(meetingButton)
@@ -117,7 +115,6 @@ const createMeetingPopup = () => {
 
 
 const showMeetingInfo = (meeting) => {
-    console.log(meeting)
     // add logic to find if popup exists before creating a new one.
     const {address, county, location, publicbody, start, end, remote, schedule} = meeting.properties;
 
@@ -159,12 +156,18 @@ const showMeetingInfo = (meeting) => {
     //     meetingInfoDiv.appendChild(meetingInfoTable);
 
 
+    const popUps = document.getElementsByClassName('mapboxgl-popup');
+    if (popUps[0]) {
+        popUps[0].remove();
+    }
     const popup = new mapboxgl.Popup({
             closeOnClick: false,
-            anchor: 'right'
+            anchor: 'center',
+            maxWidth: 'none',
+            focusAfterOpen: false
         })
         .setHTML(
-            `<table>
+            `<table class="meeting-info-table">
                 <caption>${publicbody}</caption>
                 <tr>
                 <th>Government</th>

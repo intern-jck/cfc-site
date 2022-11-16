@@ -77,6 +77,11 @@ p {
     height: 60vh;
 }
 
+.meeting-info-table {
+    max-height: 40px;
+    border: 4px solid green;
+}
+
 
 
 
