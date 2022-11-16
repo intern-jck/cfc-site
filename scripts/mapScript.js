@@ -14,7 +14,7 @@ const defaultZoom = 10;
 // Refactor to fetch from database instead of locally
 // Refactor data to sort meetings by county?
 const getMeetings = () => {
-    return fetch('assets/meetings2.json')
+    return fetch('assets/meetings.json')
         .then((response) => (response.json()))
         .then((data) => {
             return data;
