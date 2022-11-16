@@ -64,7 +64,7 @@
     </header>
 
     <main>
-        <!--Introduction & Map Section-->
+
         <section id="introduction-section">
             <h1 class="mt-5 text-center"><strong>Welcome!</strong></h1>
             <p>
@@ -92,20 +92,19 @@
             </p>
 
             <div class="row border border-5 border-dark">
-                <div class="col border border-5 border-danger">
-                    <div id="county-list" class="accordion"></div>
+                <div class="row">
+                    <div id="county-list" class="col border border-5 border-dark">
+                    </div>
+                    <div id="meeting-list" class="col border border-5 border-dark">
+                    </div>
                 </div>
-                <div class="col border border-5 border-dark">
-                    <div id="meeting-list" class="listings border border-5 border-dark"></div>
-                </div>
-                <div class="col  border border-5 border-dark">
-                    <div id="map" class="map" style='width: 400px; height: 300px;'></div>
+                <div class="row">
+                        <div id="map" class="map" style='width: 400px; height: 300px;'></div>
                 </div>
             </div>
 
         </section>
 
-        <!--Local Scan & Toolkit Instruction Section-->
         <section id="scan-section">
             <h2>Local Scan</h2>
             <p>
@@ -217,6 +216,11 @@
                 </table>
 
             </details>
+
+            <div id="local-scan-accordion" class="accordion">
+                <div></div>
+            </div>
+
 
             <!--STEEPLE Analysis Section  -->
             <details>
@@ -450,7 +454,6 @@
 
         </section>
 
-        <!--Meeting Evaluation Section-->
         <section id="evaluation-section">
         <h2>Meeting Marathon Plan</h2>
         <p>
@@ -823,7 +826,6 @@
 
         </section>
 
-        <!--Meeting Evaluation Section-->
         <section id="evaluation-section">
         <h2>Meeting Marathon Plan</h2>
         <p>
@@ -1278,6 +1280,7 @@
             </div>
 
         </footer>
+
     </main>
 </body>
 

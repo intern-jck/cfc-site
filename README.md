@@ -1,5 +1,3 @@
-# JCK DRAFT
-
 # Open Meeting Toolkit Site
 
 Educational materials to replicate [open meetings policy](openmeetingspolicy.com) in any North Carolina community.

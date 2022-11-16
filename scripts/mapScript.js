@@ -8,7 +8,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY2N0aGVncmVhdCIsImEiOiJjbDI2a2lodnYwMnRnM2Zvd
 const stateCoords = [ -82.554016, 35.60095];
 const defaultZoom = 10;
 
-
 //  ___General Helper Functions___
 // Fetch meetings.json
 // TODO:
@@ -27,18 +26,14 @@ const clearDiv = (parent) => {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
-}
-
+};
 
 // Sort meeting list to organize meetings by county
-function getMeetingsByCounty(meetings) {
-
+const sortMeetingsByCounty = (meetings) => {
     // For each meeting in the meeting list,
     return meetings.reduce((meetingsByCounty, item) => {
-
         // get the county the meeting is in,
         const county = item.properties.county;
-
         // if county is not blank,
         if (county) {
             // check if it's in our new list,
@@ -50,11 +45,10 @@ function getMeetingsByCounty(meetings) {
                 meetingsByCounty[county] = [{properties: {...item.properties}, geometry: {...item.geometry}}];
             }
         }
-
         // Return a nice sorted object!
         return meetingsByCounty;
     }, []);
-}
+};
 
 // TODO: Implement function to show meeting when clicked
 const showMeetings = (meetings) => {
@@ -69,7 +63,11 @@ const showMeetings = (meetings) => {
         meetingButton.id = `${meeting.properties.id}`;
         meetingButton.innerHTML = `${meeting.properties.publicbody}`;
         meetingButton.onclick = () => {
-            flyToMeeting(meeting.geometry.coordinates)
+            flyToMeeting(meeting.geometry.coordinates);
+            if (this.__popup) {
+                console.log('popup found!')
+            }
+            showMeetingInfo(meeting);
         };
         meetingList.appendChild(meetingButton)
     }
@@ -79,16 +77,16 @@ const showMeetings = (meetings) => {
 
 // Adds a list of meetings to the DOM.
 // TODO:  Refactor this to render accordians instead of buttons
-function addCountyListToDOM(meetingList) {
+const addCountyListToDOM = (meetingList) => {
 
-    const meetingsByCountyList = getMeetingsByCounty(meetingList)
+    const meetingsByCountyList = sortMeetingsByCounty(meetingList)
     const countiesDiv = document.querySelector('#county-list');
 
     // Create a list of county names sorted alphabetically.
     const countyNamesSorted = Object.keys(meetingsByCountyList).sort((c1, c2) => c1.localeCompare(c2));
     // For each county in list,
     for (const countyName of countyNamesSorted) {
-      
+
         // render each county as a button for better accessablitiy(sp),
         const countyButton = document.createElement('button');
         countyButton.className = 'county-btn';
@@ -102,8 +100,9 @@ function addCountyListToDOM(meetingList) {
         // countyDiv.appendChild(countyButton);
         // then div to DOM.
         countiesDiv.appendChild(countyButton);
+
     }
-}
+};
 
 // ___MapBox Functions___
 
@@ -113,6 +112,52 @@ const flyToMeeting = (meetingLocation) => {
         center: meetingLocation,
         zoom: 15
     });
+};
+
+const createMeetingPopup = () => {
+
+};
+
+
+const showMeetingInfo = (meeting) => {
+    console.log(meeting)
+    // add logic to find if popup exists before creating a new one.
+    const {address, county, location, publicbody, start, end, remote, schedule} = meeting.properties;
+    const popup = new mapboxgl.Popup({ closeOnClick: false })
+        .setLngLat(meeting.geometry.coordinates)
+        .setHTML(
+            `<div class='row border border-4 border-dark'>
+            <h3><center>${publicbody}</center></h3>
+            <table>
+            <tr>
+            <th><center>Government</center></th>
+            <th><center>Public Body</center></th>
+            <th><center>Location</center></th>
+            </tr>
+            <tr>
+            <td><center>${county}</center></td>
+            <td><center>${publicbody}</center></td>
+            <td><center>${location}</center></td>
+            </tr>
+            <tr>
+            <th><center>Address</center></th>
+            <th><center>Schedule</center></th>
+            <th><center>Start Time</center></th>
+            </tr>
+            <tr>
+            <td><center>${address}</center></td>
+            <td><center>${schedule}</center></td>
+            <td><center>${start}</center></td>
+            </tr>
+            <tr>
+            <th><center>End Time</center></th>
+            <th><center>Remote Options</center></th>
+            </tr>
+            <tr>
+            <td><center>${end}</center></td>
+            <td><center>${remote}</center></td>
+            </div>`)
+        .addTo(map);
 };
 
 
